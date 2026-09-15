@@ -5,11 +5,24 @@ import java.util.*;
 import com.example.simplebank.models.*;
 
 public class AllData {
-   public static List<Account> accs = new ArrayList<>();
+   public static List<User> users = new ArrayList<>();
+   public static List<Account> accounts = new ArrayList();
    
    static {
-   	accs.add(new CheckingAccount(100, 3.0));
-	   accs.add(new SavingAccount(2, 4.0));
-	   accs.add(new CheckingAccount(3, 5.0));
+
+   	User test = new User(1,"blue","123");
+      test.createAccount("SAVING");
+      test.createAccount("CHECKING");
+      users.add(test);
+
+	   test = new User(2,"green","124");
+      test.createAccount("SAVING");
+      test.createAccount("CHECKING");
+      users.add(test);
+
+	   test = new User(3,"red","125");
+      test.createAccount("SAVING");
+      test.createAccount("CHECKING");
+      users.add(test);
    }
 }

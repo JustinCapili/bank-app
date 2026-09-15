@@ -25,11 +25,13 @@ public class AccountService {
     }
 
     public boolean deposit(int accountId, BigDecimal amount){
-        return false;
+        Account account = accountRepository.getAccountById(accountId);
+        return account.deposit(amount);
     }
 
     public boolean withdraw(int accountId, BigDecimal amount){
-        return false;
+        Account account = accountRepository.getAccountById(accountId);
+        return account.withdraw(amount);
     }
 
     public void getTransactions(int accountId){}
