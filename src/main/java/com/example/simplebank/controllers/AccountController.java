@@ -27,7 +27,7 @@ public class AccountController {
 
     @GetMapping("/accounts/{id}")
     public Account getAccountById(@PathVariable int id){
-        Account account = accountService.getAccountById(id);
+        Account account = accountService.getAccount(id);
         return account;
     } 
 }

@@ -1,22 +1,14 @@
 package com.example.simplebank.models;
 
-public class Account extends User{
+public abstract class Account{
     protected int accountId;
     protected double balance;
 
-    public Account(){
-        this.balance = 0;
-    }
-    
-    public Account(int accountId){
-        this();
-        this.accountId = accountId;
-    }
-
-    public Account(int accountId, double balance){
+    Account(int accountId, double balance){
         this.accountId = accountId;
         this.balance = balance;
     }
+
 
     public int getAccountId(){
         return this.accountId;
@@ -28,11 +20,28 @@ public class Account extends User{
     
 }
 
-class CheckingAccount extends Account{
-    public double fee;
+public class CheckingAccount extends Account{
+    static String type = "CHECKING";
+
+    
+    public CheckingAccount(int accountId, double balance){
+        super(accountId, balance);
+    }
+
+    public String getType(){
+        return type;
+    }
 
 }
 
-class SavingAccount extends Account{
-    public double interestRate;
+public class SavingAccount extends Account{
+    static String type = "SAVINGS";
+
+    public SavingAccount(int accountId, double balance){
+        super(accountId, balance);
+    }
+
+    public String getType(){
+        return type;
+    }
 }
