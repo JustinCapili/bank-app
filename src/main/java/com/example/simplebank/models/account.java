@@ -21,6 +21,10 @@ public class Account extends User{
     public int getAccountId(){
         return this.accountId;
     }
+
+    public double getBalance(){
+        return this.balance;
+    }
     
 }
 
