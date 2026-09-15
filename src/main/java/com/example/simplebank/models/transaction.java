@@ -10,5 +10,5 @@ class deposit extends transaction{
 }
 
 class withdraw extends transaction{
-    
+
 }

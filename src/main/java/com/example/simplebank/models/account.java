@@ -1,9 +1,26 @@
 package com.example.simplebank.models;
 
-abstract class Account extends user{
+public class Account extends User{
     protected int accountId;
     protected double balance;
 
+    public Account(){
+        this.balance = 0;
+    }
+    
+    public Account(int accountId){
+        this();
+        this.accountId = accountId;
+    }
+
+    public Account(int accountId, double balance){
+        this.accountId = accountId;
+        this.balance = balance;
+    }
+
+    public int getAccountId(){
+        return this.accountId;
+    }
     
 }
 
