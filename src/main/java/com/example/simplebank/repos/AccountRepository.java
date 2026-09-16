@@ -12,7 +12,7 @@ import utilities.AllData;
 public class AccountRepository {
 
     public Account getAccountById(int id) {
-        List<Account> accounts = AllData.users;
+        List<Account> accounts = AllData.accounts;
         for (Account acc : accounts) {
             if (acc.getAccountId() == id) {
                 return acc;

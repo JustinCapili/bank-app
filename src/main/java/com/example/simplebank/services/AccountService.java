@@ -5,7 +5,7 @@ import java.util.*;
 
 import org.springframework.stereotype.Service;
 
-import com.example.simplebank.models.Account;
+import com.example.simplebank.models.*;
 import com.example.simplebank.repos.AccountRepository;
 
 @Service
@@ -34,5 +34,8 @@ public class AccountService {
         return account.withdraw(amount);
     }
 
-    public void getTransactions(int accountId){}
+    public  List<Transaction> getTransactions(int accountId){
+        Account account = accountRepository.getAccountById(accountId);
+        return account.getTransactions();
+    }
 }

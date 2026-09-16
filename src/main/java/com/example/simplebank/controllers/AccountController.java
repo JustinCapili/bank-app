@@ -1,6 +1,6 @@
 package com.example.simplebank.controllers;
 
-
+import java.math.BigDecimal;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.simplebank.models.Account;
+import com.example.simplebank.models.*;
 import com.example.simplebank.services.AccountService;
 
 
@@ -30,4 +30,19 @@ public class AccountController {
         Account account = accountService.getAccount(id);
         return account;
     } 
+
+    @GetMapping("/accounts/{id}/deposit")
+    public void depositMoney(@PathVariable int id){
+        accountService.deposit(id, new BigDecimal(500));
+    }
+
+    @GetMapping("/accounts/{id}/withdraw")
+    public void withdrawMoney(@PathVariable int id){
+        accountService.withdraw(id, new BigDecimal(200));
+    }
+
+    @GetMapping("/accounts/{id}/transactions")
+    public List<Transaction> getTransactions(int id){
+        return accountService.getTransactions(id);
+    }
 }

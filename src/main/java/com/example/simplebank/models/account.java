@@ -1,16 +1,19 @@
 package com.example.simplebank.models;
 
 import java.math.BigDecimal;
+import java.util.*;
+
 
 public abstract class Account{
     protected int accountId;
     protected BigDecimal balance;
+    protected List<Transaction> transactions;
 
     Account(int accountId, BigDecimal balance){
         this.accountId = accountId;
         this.balance = balance;
+        this.transactions = new ArrayList<>();
     }
-
 
     public int getAccountId(){
         return this.accountId;
@@ -25,46 +28,35 @@ public abstract class Account{
     }
 
     public boolean deposit(BigDecimal amount){
-        if(amount.compareTo(new BigDecimal(0)) <= 0){
+        if(amount == null || amount.compareTo(BigDecimal.ZERO) <= 0){
             return false;
         }
-        this.balance.add(amount);
+        this.balance = this.balance.add(amount);
+
+        String idString = String.valueOf(this.accountId) + String.valueOf(transactions.size());
+        int newTransactionId = Integer.parseInt(idString);
+        transactions.add(new Deposit(this.accountId, newTransactionId));
+
         return true;
     }
 
     public boolean withdraw(BigDecimal amount){
-        if(amount.compareTo(this.balance) < 0){
+        if(amount == null || amount.compareTo(BigDecimal.ZERO) <= 0 || amount.compareTo(this.balance) > 0){
             return false;
         }
-        this.balance.subtract(amount);
+        this.balance = this.balance.subtract(amount);
+
+        String idString = String.valueOf(this.accountId) + String.valueOf(transactions.size());
+        int newTransactionId = Integer.parseInt(idString);
+        transactions.add(new Withdraw(this.accountId, newTransactionId));
+    
         return true;
     }
+
+    public List<Transaction> getTransactions(){
+        return this.transactions;
+    }
     
     
 }
 
-public class CheckingAccount extends Account{
-    static String type = "CHECKING";
-
-    
-    public CheckingAccount(int accountId, BigDecimal balance){
-        super(accountId, balance);
-    }
-
-    public String getType(){
-        return type;
-    }
-
-}
-
-public class SavingAccount extends Account{
-    static String type = "SAVINGS";
-
-    public SavingAccount(int accountId, BigDecimal balance){
-        super(accountId, balance);
-    }
-
-    public String getType(){
-        return type;
-    }
-}
