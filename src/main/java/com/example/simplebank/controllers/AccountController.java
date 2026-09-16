@@ -38,16 +38,16 @@ public class AccountController {
         return accountService.createAccount(request.userId(), request.accountType());
     }
 
-    @PostMapping("/accounts/{id}/deposit/{amount}")
-    public AmountResponse depositMoney(@PathVariable int id, @PathVariable BigDecimal amount){
-        accountService.deposit(id, amount);
-        return new AmountResponse(amount);
+    @PostMapping("/accounts/{id}/deposit")
+    public AmountResponse depositMoney(@PathVariable int id, @RequestBody AmountRequest request){
+        accountService.deposit(id, request.amount());
+        return new AmountResponse(request.amount());
     }
 
-    @PostMapping("/accounts/{id}/withdraw/{amount}")
-    public AmountResponse withdrawMoney(@PathVariable int id, @PathVariable BigDecimal amount){
-        accountService.withdraw(id, amount);
-        return new AmountResponse(amount);
+    @PostMapping("/accounts/{id}/withdraw")
+    public AmountResponse withdrawMoney(@PathVariable int id, @RequestBody AmountRequest request){
+        accountService.withdraw(id, request.amount());
+        return new AmountResponse(request.amount());
     }
 
     @GetMapping("/accounts/{id}/transactions")
@@ -59,5 +59,8 @@ public class AccountController {
     }
 
     public record AmountResponse(BigDecimal amount) {
+    }
+
+    public record AmountRequest(BigDecimal amount){
     }
 }

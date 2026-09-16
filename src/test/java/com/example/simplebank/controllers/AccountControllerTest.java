@@ -57,7 +57,9 @@ class AccountControllerTest {
         when(accountService.getAccount(11)).thenReturn(account);
         when(accountService.deposit(eq(11), eq(new BigDecimal("500")))).thenReturn(true);
 
-        mockMvc.perform(post("/api/accounts/11/deposit/500"))
+        mockMvc.perform(post("/api/accounts/11/deposit")
+            .contentType("application/json")
+            .content("{\"amount\":500}"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.amount").value(500));
     }
@@ -67,7 +69,9 @@ class AccountControllerTest {
         when(accountService.getAccount(11)).thenReturn(account);
         when(accountService.withdraw(eq(11), eq(new BigDecimal("200")))).thenReturn(true);
 
-        mockMvc.perform(post("/api/accounts/11/withdraw/200"))
+        mockMvc.perform(post("/api/accounts/11/withdraw")
+            .contentType("application/json")
+            .content("{\"amount\":200}"))
                 .andExpect(status().isOk());
     }
 
