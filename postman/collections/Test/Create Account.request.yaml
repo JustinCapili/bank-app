@@ -1,0 +1,14 @@
+$kind: http-request
+description: ""
+url: http://localhost:8080/api/accounts
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"userId\": 1,\r
+
+    \  \"accountType\": \"SAVINGS\"\r
+
+    }"
+order: 4085005782695264

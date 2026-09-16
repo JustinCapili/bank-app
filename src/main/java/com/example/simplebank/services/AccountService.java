@@ -21,7 +21,7 @@ public class AccountService {
     }
 
     public Account createAccount(int userId, String accountType){
-        return null;
+        return accountRepository.createAccount(userId, accountType);
     }
 
     public boolean deposit(int accountId, BigDecimal amount){

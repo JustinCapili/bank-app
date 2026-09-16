@@ -23,18 +23,24 @@ public class User {
             String idString = String.valueOf(this.userId) + String.valueOf(accounts.size());
             int newAccountId = Integer.parseInt(idString);
 
-            accounts.add(new CheckingAccount(newAccountId, new BigDecimal(0.0)));
+            accounts.add(new CheckingAccount(this.getNewAccNum(), new BigDecimal(0.0)));
         }else{
-
-            String idString = String.valueOf(this.userId) + String.valueOf(accounts.size());
-            int newAccountId = Integer.parseInt(idString);
-
-            accounts.add(new SavingAccount(newAccountId, new BigDecimal(0.0)));
+            
+            accounts.add(new SavingAccount(this.getNewAccNum(), new BigDecimal(0.0)));
         }
     }
 
     public void addAccount(Account account){
         this.accounts.add(account);
+    }
+
+    public int getUserId(){
+        return this.userId;
+    }
+
+    public int getNewAccNum(){
+        String idString = String.valueOf(this.userId) + String.valueOf(accounts.size() + 1);
+        return Integer.parseInt(idString);
     }
 
 }

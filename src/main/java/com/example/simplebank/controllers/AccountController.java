@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.simplebank.models.*;
 import com.example.simplebank.services.AccountService;
@@ -26,23 +28,36 @@ public class AccountController {
     }
 
     @GetMapping("/accounts/{id}")
-    public Account getAccountById(@PathVariable int id){
+    public ResponseEntity<Account> getAccountById(@PathVariable int id){
         Account account = accountService.getAccount(id);
-        return account;
+        return account == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(account);
     } 
 
-    @GetMapping("/accounts/{id}/deposit")
-    public void depositMoney(@PathVariable int id){
-        accountService.deposit(id, new BigDecimal(500));
+    @PostMapping("/accounts")
+    public Account createAccount(@RequestBody AccountCreationRequest request){
+        return accountService.createAccount(request.userId(), request.accountType());
     }
 
-    @GetMapping("/accounts/{id}/withdraw")
-    public void withdrawMoney(@PathVariable int id){
-        accountService.withdraw(id, new BigDecimal(200));
+    @PostMapping("/accounts/{id}/deposit/{amount}")
+    public AmountResponse depositMoney(@PathVariable int id, @PathVariable BigDecimal amount){
+        accountService.deposit(id, amount);
+        return new AmountResponse(amount);
+    }
+
+    @PostMapping("/accounts/{id}/withdraw/{amount}")
+    public AmountResponse withdrawMoney(@PathVariable int id, @PathVariable BigDecimal amount){
+        accountService.withdraw(id, amount);
+        return new AmountResponse(amount);
     }
 
     @GetMapping("/accounts/{id}/transactions")
-    public List<Transaction> getTransactions(int id){
+    public List<Transaction> getTransactions(@PathVariable int id){
         return accountService.getTransactions(id);
+    }
+
+    public record AccountCreationRequest(int userId, String accountType) {
+    }
+
+    public record AmountResponse(BigDecimal amount) {
     }
 }

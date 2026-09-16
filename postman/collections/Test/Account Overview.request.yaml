@@ -1,0 +1,7 @@
+$kind: http-request
+url: http://localhost:8080/api/accounts/{{Account-Num}}
+method: GET
+body:
+  type: formdata
+  content: []
+order: 1789519426063
