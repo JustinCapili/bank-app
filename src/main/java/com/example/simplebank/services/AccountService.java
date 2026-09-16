@@ -26,12 +26,20 @@ public class AccountService {
 
     public boolean deposit(int accountId, BigDecimal amount){
         Account account = accountRepository.getAccountById(accountId);
-        return account != null && account.deposit(amount);
+        if (account == null || !account.deposit(amount)) {
+            return false;
+        }
+        accountRepository.updateAccount(account);
+        return true;
     }
 
     public boolean withdraw(int accountId, BigDecimal amount){
         Account account = accountRepository.getAccountById(accountId);
-        return account != null && account.withdraw(amount);
+        if (account == null || !account.withdraw(amount)) {
+            return false;
+        }
+        accountRepository.updateAccount(account);
+        return true;
     }
 
     public  List<Transaction> getTransactions(int accountId){

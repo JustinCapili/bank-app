@@ -6,6 +6,9 @@ import java.util.List;
 import org.bson.Document;
 import org.bson.types.Decimal128;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import com.example.simplebank.models.*;
@@ -67,7 +70,32 @@ public class AccountRepository {
         return BigDecimal.ZERO;
     }
 
+    public Account updateAccount(Account account){
+        if (account == null) {
+            return null;
+        }
+
+        if (mongoTemplate == null) {
+            return account;
+        }
+
+        Query query = Query.query(Criteria.where("_id").is(account.getAccountId()));
+        Update update = new Update()
+            .set("balance", new Decimal128(account.getBalance()))
+            .set("transactions", account.getTransactions());
+
+        mongoTemplate.updateFirst(query, update, "accounts");
+        return account;
+    }
+
     public User getUserById(int userId){
+        if (mongoTemplate != null) {
+            Query query = Query.query(Criteria.where("_id").is(userId));
+            return mongoTemplate.exists(query, "users")
+                    ? new User(userId, null, null)
+                    : null;
+        }
+
         List<User> users = AllData.users;
         for (User user : users){
             if (user.getUserId() == userId){
@@ -78,8 +106,12 @@ public class AccountRepository {
     }
 
     public Account createAccount(int userId, String accountType){
+        if (mongoTemplate != null) {
+            return createMongoAccount(userId, accountType);
+        }
+
         User user = this.getUserById(userId);
-        if (user == null){
+        if (user == null || accountType == null){
             return null;
         }
         if (accountType.equalsIgnoreCase("SAVINGS")){
@@ -97,5 +129,29 @@ public class AccountRepository {
         }
         
         return null;
+    }
+
+    private Account createMongoAccount(int userId, String accountType) {
+        if (accountType == null || getUserById(userId) == null) {
+            return null;
+        }
+
+        String type = accountType.toUpperCase();
+        if (!type.equals("SAVINGS") && !type.equals("CHECKING")) {
+            return null;
+        }
+
+        Query userAccounts = Query.query(Criteria.where("userId").is(userId));
+        long accountCount = mongoTemplate.count(userAccounts, "accounts");
+        int accountId = Integer.parseInt(String.valueOf(userId) + (accountCount + 1));
+
+        Document account = new Document("_id", accountId)
+                .append("userId", userId)
+                .append("type", type)
+                .append("balance", new Decimal128(BigDecimal.ZERO))
+                .append("transactions", List.of());
+
+        mongoTemplate.insert(account, "accounts");
+        return mapAccount(account);
     }
 }
