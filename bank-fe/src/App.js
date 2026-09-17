@@ -4,26 +4,36 @@ import Header from "./components/Header";
 import Login from "./components/Login";
 import CreateAccount from "./components/CreateAccount";
 import Dashboard from "./components/Dashboard";
+import { getAccountsByUser } from "./api";
 
 function App() {
   const [view, setView] = useState("login");
   const [user, setUser] = useState(null);
-  const [account, setAccount] = useState(null);
+  const [accounts, setAccounts] = useState([]);
 
-  function handleLoginSuccess(loggedInUser) {
+  async function loadAccounts(userId) {
+    try {
+      setAccounts(await getAccountsByUser(userId));
+    } catch (err) {
+      setAccounts([]);
+    }
+  }
+
+  async function handleLoginSuccess(loggedInUser) {
     setUser(loggedInUser);
+    await loadAccounts(loggedInUser.userId);
     setView("dashboard");
   }
 
-  function handleAccountCreated(newUser, newAccount) {
+  async function handleAccountCreated(newUser) {
     setUser(newUser);
-    setAccount(newAccount);
+    await loadAccounts(newUser.userId);
     setView("dashboard");
   }
 
   function handleLogout() {
     setUser(null);
-    setAccount(null);
+    setAccounts([]);
     setView("login");
   }
 
@@ -49,7 +59,7 @@ function App() {
           />
         )}
         {view === "dashboard" && user && (
-          <Dashboard user={user} account={account} />
+          <Dashboard user={user} accounts={accounts} />
         )}
       </main>
     </div>

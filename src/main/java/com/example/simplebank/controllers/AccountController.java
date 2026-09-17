@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,18 +34,23 @@ public class AccountController {
         return account == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(account);
     } 
 
+    @GetMapping("/users/{userId}/accounts")
+    public List<Account> getAccountsByUserId(@PathVariable int userId){
+        return accountService.getAccountsByUserId(userId);
+    }
+
     @PostMapping("/accounts")
     public Account createAccount(@RequestBody AccountCreationRequest request){
         return accountService.createAccount(request.userId(), request.accountType());
     }
 
-    @PostMapping("/accounts/{id}/deposit")
+    @PutMapping("/accounts/{id}/deposit")
     public AmountResponse depositMoney(@PathVariable int id, @RequestBody AmountRequest request){
         accountService.deposit(id, request.amount());
         return new AmountResponse(request.amount());
     }
 
-    @PostMapping("/accounts/{id}/withdraw")
+    @PutMapping("/accounts/{id}/withdraw")
     public AmountResponse withdrawMoney(@PathVariable int id, @RequestBody AmountRequest request){
         accountService.withdraw(id, request.amount());
         return new AmountResponse(request.amount());

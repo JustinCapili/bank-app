@@ -20,6 +20,10 @@ public class AccountService {
         return accountRepository.getAccountById(id);
     }
 
+    public List<Account> getAccountsByUserId(int userId){
+        return accountRepository.getAccountsByUserId(userId);
+    }
+
     public Account createAccount(int userId, String accountType){
         return accountRepository.createAccount(userId, accountType);
     }

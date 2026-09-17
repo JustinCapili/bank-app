@@ -1,7 +1,7 @@
 $kind: http-request
 description: ""
 url: http://localhost:8080/api/accounts/{{Account-Num}}/deposit
-method: POST
+method: PUT
 body:
   type: json
   content: "{\r\n    \"amount\" : 500\r\n}"

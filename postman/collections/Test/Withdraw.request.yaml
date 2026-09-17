@@ -1,8 +1,8 @@
 $kind: http-request
 description: ""
-url: http://localhost:8080/api/accounts/{{Account-Num}}/withdraw/500
-method: POST
+url: http://localhost:8080/api/accounts/{{Account-Num}}/withdraw
+method: PUT
 body:
   type: json
-  content: ""
+  content: "{\r\n    \"amount\" : 500\r\n}"
 order: 4044045845503851

@@ -26,3 +26,7 @@ export function createAccount(userId, accountType) {
     body: JSON.stringify({ userId: Number(userId), accountType }),
   }).then(handleResponse);
 }
+
+export function getAccountsByUser(userId) {
+  return fetch(`${BASE_URL}/users/${userId}/accounts`).then(handleResponse);
+}

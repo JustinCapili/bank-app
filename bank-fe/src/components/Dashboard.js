@@ -1,6 +1,6 @@
 import "./Dashboard.css";
 
-function Dashboard({ user, account }) {
+function Dashboard({ user, accounts }) {
   return (
     <div className="dashboard-card">
       <h2>Account Overview</h2>
@@ -12,21 +12,17 @@ function Dashboard({ user, account }) {
         <span>Email</span>
         <span>{user.email}</span>
       </div>
-      {account && (
-        <>
-          <div className="dashboard-row">
-            <span>Account Type</span>
-            <span>{account.accountType}</span>
-          </div>
-          <div className="dashboard-row">
-            <span>Account ID</span>
-            <span>{account.id}</span>
-          </div>
-          <div className="dashboard-row">
-            <span>Balance</span>
+      {accounts && accounts.length > 0 ? (
+        accounts.map((account) => (
+          <div className="dashboard-row" key={account.accountId}>
+            <span>
+              {account.type} #{account.accountId}
+            </span>
             <span>{account.balance}</span>
           </div>
-        </>
+        ))
+      ) : (
+        <p>No accounts found.</p>
       )}
     </div>
   );

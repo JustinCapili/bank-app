@@ -7,8 +7,6 @@ body:
   type: json
   content: "{\r
 
-    \    \"userId\": 20,\r
-
     \    \"name\" : \"justin\",\r
 
     \    \"email\" : \"email.123\"\r

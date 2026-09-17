@@ -1,0 +1,5 @@
+$kind: http-request
+description: ""
+url: http://localhost:8080/api/users/1/accounts
+method: GET
+order: 4366415813297796

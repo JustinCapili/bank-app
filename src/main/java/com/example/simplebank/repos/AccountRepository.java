@@ -1,6 +1,7 @@
 package com.example.simplebank.repos;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.Document;
@@ -44,6 +45,20 @@ public class AccountRepository {
         //     }
         // }
         return null;
+    }
+
+    public List<Account> getAccountsByUserId(int userId) {
+        if (mongoTemplate == null) {
+            return List.of();
+        }
+
+        Query query = Query.query(Criteria.where("userId").is(userId));
+        List<Document> documents = mongoTemplate.find(query, Document.class, "accounts");
+        List<Account> accounts = new ArrayList<>();
+        for (Document document : documents) {
+            accounts.add(mapAccount(document));
+        }
+        return accounts;
     }
 
     private Account mapAccount(Document document) {
