@@ -8,7 +8,7 @@ async function handleResponse(response) {
 }
 
 export function getUser(userId) {
-  return fetch(`http:localhost:8080/api/users/${userId}`).then(handleResponse);
+  return fetch(`${BASE_URL}/users/${userId}`).then(handleResponse);
 }
 
 export function createUser(userId, name, email) {
