@@ -17,7 +17,7 @@ public class UserService {
         return userRepository.getUserById(userId);
     }
 
-    public User createUser(int userId, String name, String email){
-        return userRepository.createUser(userId, name, email);
+    public User createUser(String name, String email){
+        return userRepository.createUser(name, email);
     }
 }

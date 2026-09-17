@@ -1,0 +1,70 @@
+.form-card {
+  max-width: 400px;
+  margin: 3rem auto;
+  padding: 2rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  background: white;
+}
+
+.form-card h2 {
+  margin-top: 0;
+  color: #1e3a5f;
+}
+
+.form-card form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-card label {
+  margin-top: 0.75rem;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+.form-card input,
+.form-card select {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.form-card button[type="submit"] {
+  margin-top: 1.5rem;
+  padding: 0.6rem;
+  background-color: #1e3a5f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.form-card button[type="submit"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.form-error {
+  color: #c0392b;
+  margin: 0.5rem 0 0;
+}
+
+.form-footer {
+  margin-top: 1.25rem;
+  text-align: center;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  color: #1e3a5f;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  font-size: 1rem;
+}

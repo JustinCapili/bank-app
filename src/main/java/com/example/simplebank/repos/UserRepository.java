@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import com.example.simplebank.models.User;
 
@@ -17,14 +18,21 @@ import utilities.AllData;
 public class UserRepository {
 
     private final MongoTemplate mongoTemplate;
+    private int numofUsers;
 
     @Autowired
     public UserRepository(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
+        this.numofUsers = (int)mongoTemplate.estimatedCount("users");
     }
 
     public UserRepository() {
         this.mongoTemplate = null;
+        this.numofUsers = 0;
+    }
+
+    public long getNumOfUsers(){
+        return this.numofUsers;
     }
 
     public User getUserById(int userId) {
@@ -42,7 +50,8 @@ public class UserRepository {
         return null;
     }
 
-    public User createUser(int userId, String name, String email) {
+    public User createUser(String name, String email) {
+        int userId = this.numofUsers + 1;
         if (userId <= 0 || name == null || email == null) {
             return null;
         }
@@ -57,6 +66,7 @@ public class UserRepository {
                     .append("email", email);
 
             mongoTemplate.insert(user, "users");
+            this.numofUsers += 1;
             return mapUser(user);
         }
 

@@ -1,0 +1,17 @@
+$kind: http-request
+name: http://localhost:8080/api/users
+description: ""
+url: http://localhost:8080/api/users
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"userId\": 20,\r
+
+    \    \"name\" : \"justin\",\r
+
+    \    \"email\" : \"email.123\"\r
+
+    }"
+order: 4363399009411618

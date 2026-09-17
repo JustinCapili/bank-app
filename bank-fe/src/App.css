@@ -1,0 +1,9 @@
+.App {
+  text-align: center;
+  min-height: 100vh;
+  background-color: #f4f6f8;
+}
+
+.App-main {
+  padding: 1rem;
+}
