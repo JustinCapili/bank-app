@@ -10,6 +10,8 @@ function Dashboard({ user, accounts, onCreateAccount, onAccountsChanged }) {
   const [transactionError, setTransactionError] = useState("");
   const [pendingAccountId, setPendingAccountId] = useState(null);
 
+  const accountIcons = { CHECKING: "💳", SAVINGS: "🏦" };
+
   async function handleCreateAccount(e) {
     e.preventDefault();
     setError("");
@@ -57,6 +59,10 @@ function Dashboard({ user, accounts, onCreateAccount, onAccountsChanged }) {
     <div className="dashboard-card">
       <h2>Account Overview</h2>
       <div className="dashboard-row">
+        <span>User ID</span>
+        <span>{user.userId}</span>
+      </div>
+      <div className="dashboard-row">
         <span>Name</span>
         <span>{user.name}</span>
       </div>
@@ -69,10 +75,13 @@ function Dashboard({ user, accounts, onCreateAccount, onAccountsChanged }) {
         accounts.map((account) => (
           <div className="dashboard-account" key={account.accountId}>
             <div className="dashboard-row">
-              <span>
+              <span className="dashboard-account__label">
+                <span className="dashboard-account__icon" aria-hidden="true">
+                  {accountIcons[account.type] || "💰"}
+                </span>
                 {account.type} #{account.accountId}
               </span>
-              <span>{account.balance}</span>
+              <span className="dashboard-account__balance">{account.balance}</span>
             </div>
             <div className="dashboard-account__actions">
               <input
@@ -103,7 +112,12 @@ function Dashboard({ user, accounts, onCreateAccount, onAccountsChanged }) {
           </div>
         ))
       ) : (
-        <p>No accounts found.</p>
+        <div className="dashboard-empty">
+          <span className="dashboard-empty__icon" aria-hidden="true">
+            📭
+          </span>
+          <p>No accounts yet. Open your first one below to get started.</p>
+        </div>
       )}
 
       <form className="dashboard-create-account" onSubmit={handleCreateAccount}>

@@ -1,13 +1,21 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "./Header.css";
 
 function Header({ user, onLogout }) {
   return (
     <header className="app-header">
-      <div className="app-header__brand">Simple Bank</div>
+      <Link to="/" className="app-header__brand">
+        Simple Bank
+      </Link>
       <nav className="app-header__nav">
         {user ? (
           <>
+            <NavLink
+              to="/dashboard"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Dashboard
+            </NavLink>
             <span className="app-header__user">Welcome, {user.name}</span>
             <button onClick={onLogout}>Log Out</button>
           </>
@@ -21,7 +29,7 @@ function Header({ user, onLogout }) {
             </NavLink>
             <NavLink
               to="/create"
-              className={({ isActive }) => (isActive ? "active" : "")}
+              className={({ isActive }) => (isActive ? " active" : "")}
             >
               Create Account
             </NavLink>

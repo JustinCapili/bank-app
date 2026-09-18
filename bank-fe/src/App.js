@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
 import Header from "./components/Header";
+import Landing from "./components/Landing";
 import Login from "./components/Login";
 import CreateAccount from "./components/CreateAccount";
 import Dashboard from "./components/Dashboard";
+import NotFound from "./components/NotFound";
 import { createAccount, clearToken, getAccountsByUser } from "./api";
 
 function App() {
@@ -54,7 +56,7 @@ function App() {
       <Header user={user} onLogout={handleLogout} />
       <main className="App-main">
         <Routes>
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/" element={<Landing user={user} />} />
           <Route
             path="/login"
             element={
@@ -88,6 +90,7 @@ function App() {
               )
             }
           />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
     </div>
