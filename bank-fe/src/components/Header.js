@@ -1,6 +1,7 @@
+import { NavLink } from "react-router-dom";
 import "./Header.css";
 
-function Header({ user, view, onNavigate, onLogout }) {
+function Header({ user, onLogout }) {
   return (
     <header className="app-header">
       <div className="app-header__brand">Simple Bank</div>
@@ -12,18 +13,18 @@ function Header({ user, view, onNavigate, onLogout }) {
           </>
         ) : (
           <>
-            <button
-              className={view === "login" ? "active" : ""}
-              onClick={() => onNavigate("login")}
+            <NavLink
+              to="/login"
+              className={({ isActive }) => (isActive ? "active" : "")}
             >
               Log In
-            </button>
-            <button
-              className={view === "create" ? "active" : ""}
-              onClick={() => onNavigate("create")}
+            </NavLink>
+            <NavLink
+              to="/create"
+              className={({ isActive }) => (isActive ? "active" : "")}
             >
               Create Account
-            </button>
+            </NavLink>
           </>
         )}
       </nav>
