@@ -81,7 +81,9 @@ function Dashboard({ user, accounts, onCreateAccount, onAccountsChanged }) {
                 </span>
                 {account.type} #{account.accountId}
               </span>
-              <span className="dashboard-account__balance">{account.balance}</span>
+              <span className="dashboard-account__balance">
+                {account.balance}
+              </span>
             </div>
             <div className="dashboard-account__actions">
               <input
