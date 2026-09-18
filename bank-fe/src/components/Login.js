@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { getUser } from "../api";
+import { login, setToken } from "../api";
 import "./Forms.css";
 
 function Login({ onLoginSuccess, onNavigateToCreate }) {
   const [userId, setUserId] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -12,10 +13,11 @@ function Login({ onLoginSuccess, onNavigateToCreate }) {
     setError("");
     setLoading(true);
     try {
-      const user = await getUser(userId);
+      const { user, token } = await login(userId, password);
+      setToken(token);
       onLoginSuccess(user);
     } catch (err) {
-      setError("No account found with that User ID.");
+      setError("Invalid User ID or password.");
     } finally {
       setLoading(false);
     }
@@ -31,6 +33,15 @@ function Login({ onLoginSuccess, onNavigateToCreate }) {
           type="number"
           value={userId}
           onChange={(e) => setUserId(e.target.value)}
+          required
+        />
+
+        <label htmlFor="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           required
         />
         {error && <p className="form-error">{error}</p>}

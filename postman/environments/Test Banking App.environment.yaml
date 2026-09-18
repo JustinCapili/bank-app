@@ -2,3 +2,7 @@ name: Test Banking App
 values:
   - key: Account-Num
     value: ''
+  - key: User-id
+    value: ''
+  - key: Token-Current
+    secret: true

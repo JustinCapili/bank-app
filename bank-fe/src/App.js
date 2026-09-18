@@ -5,7 +5,7 @@ import Header from "./components/Header";
 import Login from "./components/Login";
 import CreateAccount from "./components/CreateAccount";
 import Dashboard from "./components/Dashboard";
-import { createAccount, getAccountsByUser } from "./api";
+import { createAccount, clearToken, getAccountsByUser } from "./api";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -45,6 +45,7 @@ function App() {
   function handleLogout() {
     setUser(null);
     setAccounts([]);
+    clearToken();
     navigate("/login");
   }
 

@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { createUser } from "../api";
+import { createUser, setToken } from "../api";
 import "./Forms.css";
 
 function CreateAccount({ onUserCreated, onNavigateToLogin }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -13,7 +14,8 @@ function CreateAccount({ onUserCreated, onNavigateToLogin }) {
     setError("");
     setLoading(true);
     try {
-      const user = await createUser(name, email);
+      const { user, token } = await createUser(name, email, password);
+      setToken(token);
       onUserCreated(user);
     } catch (err) {
       setError(
@@ -43,6 +45,15 @@ function CreateAccount({ onUserCreated, onNavigateToLogin }) {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+
+        <label htmlFor="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           required
         />
 
