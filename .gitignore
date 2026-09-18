@@ -3,3 +3,6 @@
 *.iml
 target/
 .env
+.docs/
+.target/test-classes/
+./src/test/

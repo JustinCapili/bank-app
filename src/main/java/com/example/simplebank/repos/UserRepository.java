@@ -8,6 +8,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -19,16 +21,19 @@ import utilities.AllData;
 public class UserRepository {
 
     private final MongoTemplate mongoTemplate;
+    private final PasswordEncoder passwordEncoder;
     private int numofUsers;
 
     @Autowired
-    public UserRepository(MongoTemplate mongoTemplate) {
+    public UserRepository(MongoTemplate mongoTemplate, PasswordEncoder passwordEncoder) {
         this.mongoTemplate = mongoTemplate;
+        this.passwordEncoder = passwordEncoder;
         this.numofUsers = (int)mongoTemplate.estimatedCount("users");
     }
 
     public UserRepository() {
         this.mongoTemplate = null;
+        this.passwordEncoder = new BCryptPasswordEncoder();
         this.numofUsers = 0;
     }
 
@@ -51,17 +56,20 @@ public class UserRepository {
         return null;
     }
 
-    public User createUser(String name, String email) {
-        if (name == null || email == null) {
+    public User createUser(String name, String email, String password) {
+        if (name == null || email == null || password == null || password.isBlank()) {
             return null;
         }
+
+        String hashedPassword = passwordEncoder.encode(password);
 
         if (mongoTemplate != null) {
             int userId = getNextUserId();
 
             Document user = new Document("_id", userId)
                     .append("name", name)
-                    .append("email", email);
+                    .append("email", email)
+                    .append("password", hashedPassword);
 
             mongoTemplate.insert(user, "users");
             this.numofUsers += 1;
@@ -74,9 +82,16 @@ public class UserRepository {
             return null;
         }
 
-        User newUser = new User(userId, name, email);
+        User newUser = new User(userId, name, email, hashedPassword);
         AllData.users.add(newUser);
         return newUser;
+    }
+
+    public boolean verifyPassword(int userId, String rawPassword) {
+        User user = getUserById(userId);
+        return user != null && user.getPassword() != null
+                && rawPassword != null
+                && passwordEncoder.matches(rawPassword, user.getPassword());
     }
 
     // relies on the current max _id rather than a cached count, which can go stale/inaccurate
@@ -91,6 +106,7 @@ public class UserRepository {
         int userId = document.getInteger("_id");
         String name = document.getString("name");
         String email = document.getString("email");
-        return new User(userId, name, email);
+        String password = document.getString("password");
+        return new User(userId, name, email, password);
     }
 }

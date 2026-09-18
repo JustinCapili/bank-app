@@ -24,6 +24,10 @@ public class AccountService {
         return accountRepository.getAccountsByUserId(userId);
     }
 
+    public Integer getOwnerUserId(int accountId){
+        return accountRepository.getOwnerUserId(accountId);
+    }
+
     public Account createAccount(int userId, String accountType){
         return accountRepository.createAccount(userId, accountType);
     }

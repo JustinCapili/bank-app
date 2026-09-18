@@ -61,6 +61,15 @@ public class AccountRepository {
         return accounts;
     }
 
+    public Integer getOwnerUserId(int accountId) {
+        if (mongoTemplate == null) {
+            return null;
+        }
+
+        Document document = mongoTemplate.findById(accountId, Document.class, "accounts");
+        return document == null ? null : document.getInteger("userId");
+    }
+
     private Account mapAccount(Document document) {
         int accountId = document.getInteger("_id");
         BigDecimal balance = readBalance(document.get("balance"));

@@ -17,7 +17,11 @@ public class UserService {
         return userRepository.getUserById(userId);
     }
 
-    public User createUser(String name, String email){
-        return userRepository.createUser(name, email);
+    public User createUser(String name, String email, String password){
+        return userRepository.createUser(name, email, password);
+    }
+
+    public User authenticate(int userId, String password){
+        return userRepository.verifyPassword(userId, password) ? userRepository.getUserById(userId) : null;
     }
 }
