@@ -38,6 +38,14 @@ public class User {
         return this.userId;
     }
 
+    public String getName(){
+        return this.name;
+    }
+
+    public String getEmail(){
+        return this.email;
+    }
+
     public int getNewAccNum(){
         String idString = String.valueOf(this.userId) + String.valueOf(accounts.size() + 1);
         return Integer.parseInt(idString);

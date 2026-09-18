@@ -35,6 +35,6 @@ public class UserController {
         return user == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(user);
     }
 
-    public record UserCreationRequest(int userId, String name, String email) {
+    public record UserCreationRequest(String name, String email) {
     }
 }

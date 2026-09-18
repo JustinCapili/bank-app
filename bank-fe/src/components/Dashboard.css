@@ -23,3 +23,41 @@
 .dashboard-row span:first-child {
   font-weight: 600;
 }
+
+.dashboard-account {
+  border-bottom: 1px solid #eee;
+  padding: 0.4rem 0;
+}
+
+.dashboard-account .dashboard-row {
+  border-bottom: none;
+  padding-bottom: 0.3rem;
+}
+
+.dashboard-account__actions {
+  display: flex;
+  gap: 0.5rem;
+  padding-bottom: 0.6rem;
+}
+
+.dashboard-account__actions input {
+  width: 90px;
+  padding: 0.3rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.dashboard-create-account {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee;
+}
+
+.dashboard-create-account select {
+  padding: 0.4rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}

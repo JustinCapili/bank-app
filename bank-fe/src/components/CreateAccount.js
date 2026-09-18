@@ -1,12 +1,10 @@
 import { useState } from "react";
-import { createUser, createAccount } from "../api";
+import { createUser } from "../api";
 import "./Forms.css";
 
-function CreateAccount({ onAccountCreated, onNavigateToLogin }) {
-  const [userId, setUserId] = useState("");
+function CreateAccount({ onUserCreated, onNavigateToLogin }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [accountType, setAccountType] = useState("CHECKING");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -15,9 +13,8 @@ function CreateAccount({ onAccountCreated, onNavigateToLogin }) {
     setError("");
     setLoading(true);
     try {
-      const user = await createUser(userId, name, email);
-      const account = await createAccount(userId, accountType);
-      onAccountCreated(user, account);
+      const user = await createUser(name, email);
+      onUserCreated(user);
     } catch (err) {
       setError(
         "Could not create account. Please check your details and try again.",
@@ -31,15 +28,6 @@ function CreateAccount({ onAccountCreated, onNavigateToLogin }) {
     <div className="form-card">
       <h2>Create Account</h2>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="userId">User ID</label>
-        <input
-          id="userId"
-          type="number"
-          value={userId}
-          onChange={(e) => setUserId(e.target.value)}
-          required
-        />
-
         <label htmlFor="name">Full Name</label>
         <input
           id="name"
@@ -57,16 +45,6 @@ function CreateAccount({ onAccountCreated, onNavigateToLogin }) {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-
-        <label htmlFor="accountType">Account Type</label>
-        <select
-          id="accountType"
-          value={accountType}
-          onChange={(e) => setAccountType(e.target.value)}
-        >
-          <option value="CHECKING">Checking</option>
-          <option value="SAVING">Saving</option>
-        </select>
 
         {error && <p className="form-error">{error}</p>}
         <button type="submit" disabled={loading}>

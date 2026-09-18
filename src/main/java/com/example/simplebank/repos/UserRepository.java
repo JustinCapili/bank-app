@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -51,15 +52,12 @@ public class UserRepository {
     }
 
     public User createUser(String name, String email) {
-        int userId = this.numofUsers + 1;
-        if (userId <= 0 || name == null || email == null) {
+        if (name == null || email == null) {
             return null;
         }
 
         if (mongoTemplate != null) {
-            if (getUserById(userId) != null) {
-                return null;
-            }
+            int userId = getNextUserId();
 
             Document user = new Document("_id", userId)
                     .append("name", name)
@@ -70,6 +68,7 @@ public class UserRepository {
             return mapUser(user);
         }
 
+        int userId = this.numofUsers + 1;
         User existingUser = getUserById(userId);
         if (existingUser != null) {
             return null;
@@ -78,6 +77,14 @@ public class UserRepository {
         User newUser = new User(userId, name, email);
         AllData.users.add(newUser);
         return newUser;
+    }
+
+    // relies on the current max _id rather than a cached count, which can go stale/inaccurate
+    private int getNextUserId() {
+        Query query = new Query().with(Sort.by(Sort.Direction.DESC, "_id")).limit(1);
+        Document lastUser = mongoTemplate.findOne(query, Document.class, "users");
+        int maxId = lastUser == null ? 0 : lastUser.getInteger("_id");
+        return maxId + 1;
     }
 
     private User mapUser(Document document) {

@@ -5,7 +5,7 @@ import Header from "./components/Header";
 import Login from "./components/Login";
 import CreateAccount from "./components/CreateAccount";
 import Dashboard from "./components/Dashboard";
-import { getAccountsByUser } from "./api";
+import { createAccount, getAccountsByUser } from "./api";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -26,10 +26,20 @@ function App() {
     navigate("/dashboard");
   }
 
-  async function handleAccountCreated(newUser) {
+  async function handleUserCreated(newUser) {
     setUser(newUser);
     await loadAccounts(newUser.userId);
     navigate("/dashboard");
+  }
+
+  async function handleCreateAccount(accountType) {
+    const account = await createAccount(user.userId, accountType);
+    await loadAccounts(user.userId);
+    return account;
+  }
+
+  async function refreshAccounts() {
+    await loadAccounts(user.userId);
   }
 
   function handleLogout() {
@@ -57,7 +67,7 @@ function App() {
             path="/create"
             element={
               <CreateAccount
-                onAccountCreated={handleAccountCreated}
+                onUserCreated={handleUserCreated}
                 onNavigateToLogin={() => navigate("/login")}
               />
             }
@@ -66,7 +76,12 @@ function App() {
             path="/dashboard"
             element={
               user ? (
-                <Dashboard user={user} accounts={accounts} />
+                <Dashboard
+                  user={user}
+                  accounts={accounts}
+                  onCreateAccount={handleCreateAccount}
+                  onAccountsChanged={refreshAccounts}
+                />
               ) : (
                 <Navigate to="/login" replace />
               )
